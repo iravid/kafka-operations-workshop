@@ -31,6 +31,7 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_JMX_PORT: 5555
 
   exporter:
     image: danielqsj/kafka-exporter:latest
@@ -42,3 +43,17 @@ services:
       - "9308:9308"
     command:
       - "--kafka.server=broker:29092"
+
+  jmx-exporter:
+    image: solsson/kafka-prometheus-jmx-exporter:latest
+    hostname: jmx-exporter
+    container_name: jmx-exporter
+    depends_on:
+      - broker
+    ports:
+      - "5556:5556"
+    command:
+      - "5556"
+      - "/etc/jmx-prometheus/jmx-prometheus.yml"
+    volumes:
+      - ./jmx-prometheus:/etc/jmx-prometheus

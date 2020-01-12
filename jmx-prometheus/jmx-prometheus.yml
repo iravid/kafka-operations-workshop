@@ -1,0 +1,154 @@
+jmxUrl: "service:jmx:rmi:///jndi/rmi://broker:5555/jmxrmi"
+lowercaseOutputLabelNames: true
+lowercaseOutputName: true
+ssl: false
+rules:
+- pattern: "kafka.cluster<type=(.+), name=(.+), topic=(.+), partition=(.+)><>(.+):"
+  name: kafka_cluster_$2_$5
+  labels:
+    topic: $3
+    partition: $4
+- pattern: "kafka.controller<type=(.+), name=(.+)><>(.+):"
+  name: kafka_controller_$1_$2
+  labels:
+    quantile: $3
+- pattern: "kafka.coordinator.(.+)<type=(.+), name=(.+)><>(.+):"
+  name: kafka_coordinator_$1_$3_$4
+  labels:
+    type: $2
+- pattern: "kafka.log<type=(.+), name=(.+), topic=(.+), partition=(.+)><>(.+):"
+  name: kafka_log_$2_$5
+  labels:
+    type: $1
+    topic: $3
+    partition: $4
+- pattern: "kafka.log<type=(.+), name=(.+)><>(.+thPercentile):"
+  name: kafka_log_$2
+  labels:
+    quantile: $3
+- pattern: "kafka.log<type=(.+), name=(.+)><>(.+):"
+  name: kafka_log_$2_$3
+- pattern: "kafka.network<type=(.+), name=(.+), listener=(.+)><>(.+):"
+  name: kafka_network_$1_$3
+  labels:
+    type: $2
+- pattern: "kafka.network<type=(.+), name=(.+), networkProcessor=(.+)><>(.+):"
+  name: kafka_network_$1_$4
+  labels:
+    processor: $3
+    type: $2
+- pattern: "kafka.network<type=(.+), name=(.+), processor=(.+)><>(.+):"
+  name: kafka_network_$1_$4
+  labels:
+    processor: $3
+    type: $2
+- pattern: "kafka.network<type=(.+), name=(.+), request=(.+), version=(.+)><>(.+):"
+  name: kafka_network_$1_$2_$5
+  labels:
+    request: $3
+    version: $4
+- pattern: "kafka.network<type=(.+), name=(.+), request=(.+), error=(.+)><>(.+):"
+  name: kafka_network_$1_$2_$5
+  labels:
+    request: $3
+    error: $4
+- pattern: "kafka.network<type=(.+), name=(.+), request=(.+)><>(.+):"
+  name: kafka_network_$1_$2_$4
+  labels:
+    request: $3
+- pattern: "kafka.network<type=(.+), name=(.+)><>(.+):"
+  name: kafka_network_$1_$2_$3
+- pattern: "kafka.server<type=(.+), name=(.+), topic=(.+), partition=(.+)><>(.+):"
+  name: kafka_server_$1_$2_$5
+  labels:
+    topic: $3
+    partition: $4
+- pattern: "kafka.server<type=(.+), name=(.+), topic=(.+)><>(.+):"
+  name: kafka_server_$1_$2_$4
+  labels:
+    topic: $3
+- pattern: "kafka.server<type=(.+), name=(.+), topic=(.+)><>(.+):"
+  name: kafka_server_$1_$2_$4
+  labels:
+    topic: $3
+- pattern: "kafka.server<type=(.+), name=(.+), fetcherType=(.+)><>(.+):"
+  name: kafka_server_$1_$2_$4
+  labels:
+    fetcherType: $3
+- pattern: "kafka.server<type=(.+), name=(.+), delayedOperation=(.+)><>(.+):"
+  name: kafka_server_$1_$2_$4
+  labels:
+    fetcherType: $3
+- pattern: "kafka.server<type=(.+), broker-id=(.+), fetcher-id=(.+)><>(.+)ֿ:"
+  name: kafka_server_$1_$4
+  labels:
+    broker-id: $2
+    fetcher-id: $3
+- pattern: "kafka.server<type=(.+), name=(.+), clientId=(.+)><>(.+):"
+  name: kafka_server_$1_$2_$4
+  labels:
+    clientId: $3
+- pattern: "kafka.server<type=(.+), listener=(.+), networkProcessor=(.+)><>(.+):"
+- pattern: "kafka.server<type=(.+), name=(.+)><>(.+):"
+  name: kafka_server_$1_$2_$3
+- pattern: "kafka.server<type=(.+)><>(.+):"
+  name: kafka_server_$1_$2
+- pattern: "kafka.utils<type=(.+), name=(.+)><>(.+):"
+- pattern: "kafka.consumer<type=(.+), client-id=(.+), topic=(.+)><>(.+):"
+  name: kafka_consumer_$1_$4
+  labels:
+    clientId: $2
+    topic: $3
+- pattern: "kafka.consumer<type=(.+), client-id=(.+), node-id=(.+)><>(.+):"
+  name: kafka_consumer_$1_$4
+  labels:
+    clientId: $2
+    nodeId: $3
+- pattern: "kafka.consumer<type=(.+), client-id=(.+)><>(.+):"
+  name: kafka_consumer_$1_$3
+  labels:
+    clientId: $2
+- pattern: "kafka.producer<type=(.+), client-id=(.+), topic=(.+)><>(.+):"
+  name: kafka_consumer_$1_$4
+  labels:
+    clientId: $2
+    topic: $3
+- pattern: "kafka.producer<type=(.+), client-id=(.+), node-id=(.+)><>(.+):"
+  name: kafka_consumer_$1_$4
+  labels:
+    clientId: $2
+    nodeId: $3
+- pattern: "kafka.producer<type=(.+), client-id=(.+)><>(.+):"
+  name: kafka_consumer_$1_$3
+  labels:
+    clientId: $2
+- pattern: java.lang<type=(.+), name=(.+), key=(.+)><(\w+), (\w+)>(\w+)
+  name: java_lang_$1_$5_$6
+  labels:
+    name: $2
+    key: $3
+- pattern: java.lang<type=(.+), name=(.+), key=(.+)><(\w+)>(\w+)
+  name: java_lang_$1_$4_$5
+  labels:
+    name: $2
+    key: $3
+- pattern: java.lang<type=(.+), name=(.+), key=(.+)><>(\w+)
+  name: java_lang_$1_$4
+  labels:
+    name: $2
+    key: $3
+- pattern: java.lang<type=(.+), name=(.+)><(.+)>(\w+)
+  name: java_lang_$1_$4
+  labels:
+    name: $2
+    usage: $3
+- pattern: java.lang<type=(.+), name=(.+)><>(\w+)
+  name: java_lang_$1_$3
+  labels:
+    name: $2
+- pattern: java.lang<type=(.+)><(.+)>(\w+)
+  name: java_lang_$1_$3
+  labels:
+    type: $2
+- pattern: java.lang<type=(.+)><>(\w+)
+  name: java_lang_$1_$2
